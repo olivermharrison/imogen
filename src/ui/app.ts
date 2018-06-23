@@ -1,8 +1,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Graph from '../graph';
 
+import Operations from './operations/operations.vue';
 
-@Component
+@Component({
+    components: {
+        Operations
+    }
+})
 export default class App extends Vue {
 
     public graph: Graph;
@@ -18,6 +23,13 @@ export default class App extends Vue {
 
     public mounted() {
         this.graph.init();
+    }
+
+    closeModal(applied: boolean, operation?: string) {
+        this.showOperations = false;
+        if (applied) {
+            this.graph.invert(); // temp
+        }
     }
 
     public applyOperation(operation: string) {

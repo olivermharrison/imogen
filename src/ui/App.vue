@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-    <div class="io">
+    <div class="io" :style="{ filter: (showOperations) ? 'blur(5px)' : 'none' }">
         <div>
             <canvas id="inputCanvas" width="250" height="250  "></canvas>
         </div>
@@ -13,14 +13,16 @@
         </div>
     </div>
 
-    <div class="actions">
+    <div class="actions"  :style="{ filter: (showOperations) ? 'blur(5px)' : 'none' }">
         <div><button @click="applyOperation('undo')">undo</button></div>
-        <div><button @click="showOperations = !showOperations">add operation</button></div>
+        <div><button @click="showOperations = !showOperations" class="accent">add operation</button></div>
         <div><button @click="applyOperation('reset')">reset</button></div>
     </div>
 
-    <div v-show="showOperations">
-        OPERATIONS
+
+
+    <div v-if="showOperations">
+        <operations v-on:close="closeModal" />
     </div>
 </div>
 </template>
