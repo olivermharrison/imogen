@@ -6,7 +6,7 @@ import * as scene from './scene';
 Vue.config.productionTip = true;
 
 new Vue({
-  render: (h) => h(App),
+    render: (h) => h(App),
 }).$mount('#app');
 
 scene.initScene();
