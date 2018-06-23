@@ -112,4 +112,19 @@ export default class Graph {
     public applyOperation(operation: string) {
         console.log('applying operation ', operation);
     }
+
+    public invert() {  
+        this.updateCount = 0;
+        this.updates.push([]);
+        if (this.inputImageData) {
+
+            for (var i=0; i<this.inputImageData.length; i++) {
+                if ((i-3)%4 == 0) { // alpha
+                  this.updates[this.updates.length -1].push(255);
+                } else {
+                  this.updates[this.updates.length -1].push((255 - this.updates[this.updates.length - 2][i]));
+                }
+            }
+        }
+    }
 }
