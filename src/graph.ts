@@ -23,6 +23,12 @@ export default class Graph {
         this.outputCanvas = new CanvasImage('');
 
         this.scene = new Scene();
+
+        const animate = () => {
+            requestAnimationFrame( animate );
+            this.scene.update();
+        };
+        animate();
     }
 
     public init() {
