@@ -18,8 +18,13 @@ export default class Scene {
         const ambientLight = new THREE.AmbientLight( 0xffffff );
         this.scene.add( ambientLight );
 
+        let theta = 0;
+        const radius= 200;
         var animate = () => {
             requestAnimationFrame( animate );
+            theta += 0.2;
+            this.camera.position.x = radius * Math.sin( THREE.Math.degToRad( theta ) );
+            this.camera.position.z = radius * Math.cos( THREE.Math.degToRad( theta ) );
             this.camera.lookAt( this.scene.position );
             this.renderer.render(this.scene, this.camera);
         };
