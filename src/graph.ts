@@ -4,11 +4,11 @@ import * as util from './util';
 
 export default class Graph {
 
-    inputImage: HTMLImageElement;
-    inputCanvas: CanvasImage;
-    outputCanvas: CanvasImage;
+    public inputImage: HTMLImageElement;
+    public inputCanvas: CanvasImage;
+    public outputCanvas: CanvasImage;
 
-    resizedImage: boolean = false;
+    public resizedImage: boolean = false;
 
     constructor() {
         this.inputImage = new Image();
@@ -16,13 +16,13 @@ export default class Graph {
         this.outputCanvas = new CanvasImage('');
     }
 
-    init() {
+    public init() {
         this.inputCanvas = new CanvasImage('inputCanvas');
         this.outputCanvas = new CanvasImage('outputCanvas');
         this.setInputImage('./logo.png');
     }
 
-    setInputImage(file: string) {
+    public setInputImage(file: string) {
         this.inputImage.src = file;
         this.resizedImage = false;
         this.inputImage.onload = () => {
@@ -31,13 +31,13 @@ export default class Graph {
                 this.inputImage.src = util.resizeImage(this.inputImage);
                 return;
             }
-            
+
             this.inputCanvas.drawImage(this.inputImage);
             this.outputCanvas.drawImage(this.inputImage);
-        }
+        };
     }
 
-    applyOperation(operation: string) {
+    public applyOperation(operation: string) {
         console.log('applying operation ', operation);
     }
 }

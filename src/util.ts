@@ -2,22 +2,22 @@ export const resizeImage = (image: HTMLImageElement) => {
 
     // TODO cross browser
     const maxSize = 256;
-    const maxWidth = (window.innerWidth*0.3 <= maxSize) ? window.innerWidth*0.3 : maxSize;
-    const maxHeight = (window.innerHeight*0.3 <= maxSize) ? window.innerHeight*0.3 : maxSize;
+    const maxWidth = (window.innerWidth * 0.3 <= maxSize) ? window.innerWidth * 0.3 : maxSize;
+    const maxHeight = (window.innerHeight * 0.3 <= maxSize) ? window.innerHeight * 0.3 : maxSize;
 
     const originalWidth = image.width;
     const originalHeight = image.height;
-  
-    const widthFactor = originalWidth/maxWidth;
-    const heightFactor = originalHeight/maxHeight;
-  
+
+    const widthFactor = originalWidth / maxWidth;
+    const heightFactor = originalHeight / maxHeight;
+
     const scaleFactor = (widthFactor > heightFactor) ? widthFactor : heightFactor;
-  
-    const newWidth = Math.floor(originalWidth/scaleFactor);
-    const newHeight = Math.floor(originalHeight/scaleFactor);
-  
-    console.log("Resizing image from " + originalWidth + "x" + originalHeight + " to " + newWidth + "x" + newHeight);
-  
+
+    const newWidth = Math.floor(originalWidth / scaleFactor);
+    const newHeight = Math.floor(originalHeight / scaleFactor);
+
+    console.log('Resizing image from ' + originalWidth + 'x' + originalHeight + ' to ' + newWidth + 'x' + newHeight);
+
     // create an off-screen canvas
     const canvas = document.createElement('canvas'),
     ctx = canvas.getContext('2d');
@@ -25,8 +25,8 @@ export const resizeImage = (image: HTMLImageElement) => {
     canvas.height = newHeight;
     if (ctx) {
         ctx.drawImage(image, 0, 0, newWidth, newHeight);
-    } 
-  
+    }
+
     // encode image to data-uri with base64 version of compressed image
     return canvas.toDataURL();
 };

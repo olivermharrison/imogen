@@ -5,10 +5,10 @@ import Scene from '../scene';
 @Component
 export default class App extends Vue {
 
-    graph: Graph;
-    scene: Scene;
+    public graph: Graph;
+    public scene: Scene;
 
-    showOperations: boolean;
+    public showOperations: boolean;
 
     constructor() {
         super();
@@ -17,11 +17,11 @@ export default class App extends Vue {
         this.scene = new Scene();
     }
 
-    mounted() {
+    public mounted() {
         this.graph.init();
     }
 
-    applyOperation(operation: string) {
+    public applyOperation(operation: string) {
         this.graph.applyOperation(operation);
     }
 }
