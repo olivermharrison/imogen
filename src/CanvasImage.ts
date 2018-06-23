@@ -4,7 +4,7 @@ export default class CanvasImage {
     public element?: HTMLCanvasElement;
     public context?: CanvasRenderingContext2D;
 
-    public data?: any;
+    public data?: Uint8ClampedArray;
 
     constructor(id: string) {
         const el = document.getElementById(id) as HTMLCanvasElement;
@@ -17,14 +17,10 @@ export default class CanvasImage {
         }
     }
 
-    public drawImage(image: HTMLImageElement) {
-        if (!this.context) { return; }
+    public drawImage(image: HTMLImageElement): Uint8ClampedArray | undefined {
+        if (!this.context) { return undefined; }
 
         this.context.drawImage(image, 0, 0);
-        this.data = this.context.getImageData(0, 0, image.width, image.height).data;
-    }
-
-    public setData(newData: any) {
-        this.data = newData;
+        return this.context.getImageData(0, 0, image.width, image.height).data;
     }
 }

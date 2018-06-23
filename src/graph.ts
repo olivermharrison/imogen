@@ -1,4 +1,5 @@
-
+import Scene from './scene';
+import Particles from './particles';
 import CanvasImage from './CanvasImage';
 import * as util from './util';
 
@@ -8,12 +9,20 @@ export default class Graph {
     public inputCanvas: CanvasImage;
     public outputCanvas: CanvasImage;
 
+    public inputImageData?: Uint8ClampedArray;
+    public outputImageData?: Uint8ClampedArray;
+
     public resizedImage: boolean = false;
+
+    public scene: Scene;
+    public particles?: Particles;
 
     constructor() {
         this.inputImage = new Image();
         this.inputCanvas = new CanvasImage('');
         this.outputCanvas = new CanvasImage('');
+
+        this.scene = new Scene();
     }
 
     public init() {
@@ -32,8 +41,12 @@ export default class Graph {
                 return;
             }
 
-            this.inputCanvas.drawImage(this.inputImage);
-            this.outputCanvas.drawImage(this.inputImage);
+            this.inputImageData = this.inputCanvas.drawImage(this.inputImage);
+            this.outputImageData = this.outputCanvas.drawImage(this.inputImage);
+            if (this.inputImageData) {
+                this.particles = new Particles(this.scene.scene, this.inputImageData);
+            }
+            
         };
     }
 
