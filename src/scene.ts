@@ -1,16 +1,18 @@
 import * as THREE from 'three';
 
-let scene;
-let camera;
-let renderer;
+export default class Scene {
+    scene: THREE.Scene;
+    camera: THREE.PerspectiveCamera;
+    renderer: THREE.WebGLRenderer;
 
-export const initScene = () => {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-    renderer = new THREE.WebGLRenderer();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    document.body.appendChild( renderer.domElement );
-};
+    constructor() {
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    
+        this.renderer = new THREE.WebGLRenderer();
+        this.renderer.setSize( window.innerWidth, window.innerHeight );
+        document.body.appendChild( this.renderer.domElement );
+    }
+}
 
 
