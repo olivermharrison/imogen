@@ -32,6 +32,22 @@ body {
     overflow: hidden;
     margin: 0;
 }
+button {
+    padding: 1rem 2rem;
+    margin: 1rem;
+    border-radius: 0.4rem;
+    border: 1px solid rgb(67, 181, 226);
+    background: none;
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+
+    &.accent {
+        background: rgb(95, 167, 245);
+    }
+}
 
 .actions {
     position: fixed;
@@ -42,14 +58,5 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    button {
-        padding: 1rem 2rem;
-        border-radius: 0.4rem;
-        border: 1px solid rgb(67, 181, 226);
-        background: none;
-        color: rgb(255, 255, 255);
-        font-size: 1rem;
-        outline: none;
-        cursor: pointer;
-    }
+    
 }
