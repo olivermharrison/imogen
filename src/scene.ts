@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 let scene;
-let camera
+let camera;
 let renderer;
 
 export const initScene = () => {
