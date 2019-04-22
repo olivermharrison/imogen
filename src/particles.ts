@@ -48,4 +48,8 @@ export default class Particles {
         this.particles = new THREE.Points( geometry, material );
         this.scene.add( this.particles );
     }
+
+    public reset() {
+        this.scene.remove(this.particles);
+    }
 }
