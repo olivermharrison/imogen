@@ -131,4 +131,73 @@ export default class Graph {
             }
         }
     }
+
+    public greyscale() {
+        if (this.outputImageData) {
+            this.updateCount = 0;
+            this.updates.push([]);
+            for (var i=0; i<this.outputImageData.length; i+=4) {
+                let avg = Math.floor((this.outputImageData[i] + this.outputImageData[i+1] + this.outputImageData[i+2])/3);
+                for (var j=0; j<3; j++) {
+                  this.updates[this.updates.length -1].push(avg);
+                }
+                this.updates[this.updates.length -1].push(255);
+            }
+        }
+    }
+
+    public undo() {
+        if (this.updates.length > 1) {
+            this.isReverseOperation = true;
+            this.updateCount = 0;
+            this.updates = [this.updates[this.updates.length - 2], this.updates[this.updates.length - 1]];
+        } else {
+            console.log('no');
+        }
+    }
+
+    public resetImage() {
+        if (this.updates.length > 1) {
+            this.isReverseOperation = true;
+            this.updateCount = 0;
+            this.updates = [this.updates[0], this.updates[this.updates.length - 1]];
+        } else {
+            console.log('no');
+        }
+    }
+
+    public brighten(percentage: number = 0) {   // -100 to 100
+        if (this.inputImageData) {
+            this.updateCount = 0;   // begin animation
+            this.updates.push([]);
+            const multiplier = ((percentage + 100) / 100);
+            console.log("RECEIVED", percentage);
+            console.log("MULTIPLIER", multiplier);
+            for (var i=0; i<this.inputImageData.length; i++) {
+                if ((i-3)%4 == 0) { // alpha
+                  this.updates[this.updates.length -1].push(255);
+                } else {
+                    let newValue = this.updates[this.updates.length - 2][i]*multiplier;
+                    newValue = newValue > 255 ? 255 : newValue;
+                    this.updates[this.updates.length -1].push(newValue);
+                }
+            }
+        }
+    }
+
+    public contrast() {
+        if (this.inputImageData) {
+            this.updateCount = 0;   // begin animation
+            this.updates.push([]);
+            for (var i=0; i<this.inputImageData.length; i++) {
+                if ((i-3)%4 == 0) { // alpha
+                    this.updates[this.updates.length -1].push(255);
+                } else {
+                    // TODO do per pixel, not per colour component, i.e. get average brightness
+                    const multiplier = this.updates[this.updates.length - 2][i] > 128 ? 1.2 : 0.8; 
+                    this.updates[this.updates.length -1].push(this.updates[this.updates.length - 2][i]*multiplier);
+                }
+            }
+        }
+    }
 }

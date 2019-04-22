@@ -13,10 +13,10 @@
         </div>
     </div>
 
-    <div class="actions"  :style="{ filter: (showOperations) ? 'blur(5px)' : 'none' }">
-        <div><button @click="applyOperation('undo')">undo</button></div>
+    <div class="actions"  :style="{ filter: (showOperations || showImageSelector) ? 'blur(5px)' : 'none' }">
+        <div><button @click="applyOperation({title: 'undo'})">undo</button></div>
         <div><button @click="showOperations = !showOperations" class="accent">add operation</button></div>
-        <div><button @click="applyOperation('reset')">reset</button></div>
+        <div><button @click="applyOperation({title: 'reset'})">reset</button></div>
     </div>
 
 

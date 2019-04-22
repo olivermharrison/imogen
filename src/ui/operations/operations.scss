@@ -1,4 +1,4 @@
-.operations {
+.operation-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -16,11 +16,7 @@
         width: 80%;
         height: 80%;
 
-        overflow: scroll;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
+       
 
         background: rgba(0, 0, 0, 0.87);
         border-radius: 1rem;
@@ -28,18 +24,44 @@
         max-width: 500px;
         border: 3px solid rgb(82, 130, 173);
 
-        .operation {
-            margin: 1rem;
-            padding: 0.5rem;
-            border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
 
-            &.selected {
-                background: rgba(0, 167, 255, 0.38);
+
+        .operations {
+            overflow-y: scroll;
+            flex-grow: 1;
+
+            &::-webkit-scrollbar {
+                display: none;
             }
 
-            p {
-                margin: 0.4rem;
+            .operation {
+                margin: 1rem;
+                padding: 0.5rem;
+                border-radius: 1rem;
+
+                background: rgba(255, 255, 255, 0.13);
+    
+                &.selected {
+                    background: rgba(0, 167, 255, 0.38);
+                }
+    
+                p {
+                    margin: 0.4rem;
+                }
+
+                .io-range {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    span {
+                        margin: 1rem;
+                    }    
+                }
             }
         }
+
+        
     }
 }
