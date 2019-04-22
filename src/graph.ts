@@ -69,7 +69,7 @@ export default class Graph {
                     this.particles.reset();
                 }
                 this.particles = new Particles(this.scene.scene, this.inputImageData);
-                this.updates.push(this.inputImageData.slice());
+                this.updates.push(Array.from(this.inputImageData));
             }
         };
     }
