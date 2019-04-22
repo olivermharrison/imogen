@@ -1,9 +1,11 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three-orbitcontrols-ts';
 
 export default class Scene {
     public scene: THREE.Scene;
     public camera: THREE.PerspectiveCamera;
     public renderer: THREE.WebGLRenderer;
+    public controls: THREE.OrbitControls;
 
     public radius: number = 200;
     private theta: number = 0;
@@ -20,6 +22,8 @@ export default class Scene {
         // lights
         const ambientLight = new THREE.AmbientLight( 0xffffff );
         this.scene.add( ambientLight );
+
+        this.controls = new OrbitControls(this.camera, this.renderer.domElement) as any;
     }
 
     update() {
