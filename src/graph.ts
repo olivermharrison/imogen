@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+var TWEEN = require('@tweenjs/tween.js');
 
 import Scene from './scene';
 import Particles from './particles';
@@ -19,8 +20,6 @@ export default class Graph {
     public scene: Scene;
     public particles?: Particles;
 
-    private updateCount: number = -1;
-    private updateLength: number = 80; // num anim frames
     public updates: any[] = [];
 
     constructor() {
@@ -34,6 +33,7 @@ export default class Graph {
             requestAnimationFrame( animate );
             this.scene.update();
             this.update();
+            TWEEN.update();
         };
         animate();
     }
@@ -45,46 +45,7 @@ export default class Graph {
     }
 
     public update() {
-        if (this.updateCount >= 0) {
-            this.updateCount++;
-
-            if (this.outputImageData && this.outputCanvas.context) {
-                let output = this.outputCanvas.context.createImageData(this.inputImage.width,this.inputImage.height);
-
-                // lerp each RGB value of each pixel
-                for (let i=0; i<this.outputImageData.length; i++) {
-                    const from = this.updates[this.updates.length-1][i];
-                    const to = this.updates[this.updates.length-2][i];
-                    const lerped = (THREE.Math as any).lerp(from, to, this.updateCount/this.updateLength);
-
-                    this.outputImageData[i] = lerped;
-                    output.data[i] = lerped;
-
-                    if (i%(4*Particles.divisor) === 0 && this.particles) {
-                        const from = new THREE.Vector3(this.updates[this.updates.length-2][i]-128, this.updates[this.updates.length-2][i+1]-128, this.updates[this.updates.length-2][i+2]-128);
-                        const to = new THREE.Vector3(this.updates[this.updates.length-1][i]-128, this.updates[this.updates.length-1][i+1]-128, this.updates[this.updates.length-1][i+2]-128);
-                        const pos = (from).lerp(to, this.updateCount/this.updateLength);
-
-                        (this.particles.particles.geometry as any).vertices[i/(4*Particles.divisor)] = pos;
-                        (this.particles.particles.geometry as any).colors[i/(4*Particles.divisor)] = new THREE.Color((pos.x + 128)/255, (pos.y + 128)/255, (pos.z + 128)/255);;
-                    }
-                }
-                // update output image canvas
-                this.outputCanvas.context.putImageData( output , 0, 0 );
-
-                // update particles
-                if (this.particles) {
-                    (this.particles.particles.geometry as any).verticesNeedUpdate = true;
-                    (this.particles.particles.geometry as any).colorsNeedUpdate = true;
-                }
-            }
-
-            // check for end of operation
-            if (this.updateCount >= this.updateLength) {
-                this.updateCount = -1;
-                console.log("DONE animation");
-            }
-        }
+        
     }
 
     public setInputImage(file: any) {  
@@ -113,43 +74,85 @@ export default class Graph {
         };
     }
 
-    public applyOperation(operation: string) {
+    public applyOperation(operation: any) {
         console.log('applying operation ', operation);
+
+        let isReverseOperation = false;
+        switch (operation.title) {
+            case "invert":
+                this.invert();
+                break;
+            case "greyscale": 
+                this.greyscale();
+                break;
+            case "undo":
+                isReverseOperation = true;
+                this.undo();
+                break;
+            case "reset":
+                isReverseOperation = true;
+                this.resetImage();
+                break;
+            case "brighten":
+                this.brighten(parseInt(operation.value));
+                break;
+            case "contrast":
+                this.contrast();
+                break;
+            default:
+                break;
+        }
+
+        this.applyUpdate(isReverseOperation);
     }
 
-    public invert() {  
-        this.updateCount = 0;
-        this.updates.push([]);
-        if (this.inputImageData) {
+    public applyUpdate(isReverseOperation: boolean) {
+        if (this.updates.length > 1) {
+            let output = this.outputCanvas!.context!.createImageData(this.inputImage.width,this.inputImage.height);
+            const source = isReverseOperation ? this.updates[this.updates.length-1] : this.updates[this.updates.length-2];
+            const target = isReverseOperation ? this.updates[this.updates.length-2] : this.updates[this.updates.length-1];
 
-            for (var i=0; i<this.inputImageData.length; i++) {
-                if ((i-3)%4 == 0) { // alpha
-                  this.updates[this.updates.length -1].push(255);
-                } else {
-                  this.updates[this.updates.length -1].push((255 - this.updates[this.updates.length - 2][i]));
+            util.animateImage(source, target, {
+                duration: 1500, 
+                update: (d: any[]) => {
+                    for (let i=0; i<d.length; ++i) {
+                        output.data[i] = d[i];  // cant assign whole array...
+                        if (i%(4*Particles.divisor) === 0) {
+                            const position = new THREE.Vector3(d[i] - 128, d[i+1] - 128, d[i+2] - 128);
+                            (this.particles!.particles.geometry as any).vertices[i/(4*Particles.divisor)] = position;
+                        }
+                    }
+                    this.outputCanvas!.context!.putImageData(output , 0, 0 );
+                    (this.particles!.particles!.geometry as any).verticesNeedUpdate = true;
                 }
+            });
+        }
+    }
+
+    public invert() {
+        this.updates.push([]);
+        for (var i=0; i<this.inputImageData!.length; i++) {
+            if ((i-3)%4 == 0) { // alpha
+              this.updates[this.updates.length -1].push(255);
+            } else {
+              this.updates[this.updates.length -1].push((255 - this.updates[this.updates.length - 2][i]));
             }
         }
     }
 
     public greyscale() {
-        if (this.outputImageData) {
-            this.updateCount = 0;
-            this.updates.push([]);
-            for (var i=0; i<this.outputImageData.length; i+=4) {
-                let avg = Math.floor((this.outputImageData[i] + this.outputImageData[i+1] + this.outputImageData[i+2])/3);
-                for (var j=0; j<3; j++) {
-                  this.updates[this.updates.length -1].push(avg);
-                }
-                this.updates[this.updates.length -1].push(255);
+        this.updates.push([]);
+        for (var i=0; i<this.outputImageData!.length; i+=4) {
+            let avg = Math.floor((this.outputImageData![i] + this.outputImageData![i+1] + this.outputImageData![i+2])/3);
+            for (var j=0; j<3; j++) {
+                this.updates[this.updates.length -1].push(avg);
             }
+            this.updates[this.updates.length -1].push(255);
         }
     }
 
     public undo() {
         if (this.updates.length > 1) {
-            this.isReverseOperation = true;
-            this.updateCount = 0;
             this.updates = [this.updates[this.updates.length - 2], this.updates[this.updates.length - 1]];
         } else {
             console.log('no');
@@ -158,8 +161,6 @@ export default class Graph {
 
     public resetImage() {
         if (this.updates.length > 1) {
-            this.isReverseOperation = true;
-            this.updateCount = 0;
             this.updates = [this.updates[0], this.updates[this.updates.length - 1]];
         } else {
             console.log('no');
@@ -167,13 +168,9 @@ export default class Graph {
     }
 
     public brighten(percentage: number = 0) {   // -100 to 100
-        if (this.inputImageData) {
-            this.updateCount = 0;   // begin animation
-            this.updates.push([]);
+        this.updates.push([]);
             const multiplier = ((percentage + 100) / 100);
-            console.log("RECEIVED", percentage);
-            console.log("MULTIPLIER", multiplier);
-            for (var i=0; i<this.inputImageData.length; i++) {
+            for (var i=0; i<this.inputImageData!.length; i++) {
                 if ((i-3)%4 == 0) { // alpha
                   this.updates[this.updates.length -1].push(255);
                 } else {
@@ -182,21 +179,17 @@ export default class Graph {
                     this.updates[this.updates.length -1].push(newValue);
                 }
             }
-        }
     }
 
     public contrast() {
-        if (this.inputImageData) {
-            this.updateCount = 0;   // begin animation
-            this.updates.push([]);
-            for (var i=0; i<this.inputImageData.length; i++) {
-                if ((i-3)%4 == 0) { // alpha
-                    this.updates[this.updates.length -1].push(255);
-                } else {
-                    // TODO do per pixel, not per colour component, i.e. get average brightness
-                    const multiplier = this.updates[this.updates.length - 2][i] > 128 ? 1.2 : 0.8; 
-                    this.updates[this.updates.length -1].push(this.updates[this.updates.length - 2][i]*multiplier);
-                }
+        this.updates.push([]);
+        for (var i=0; i<this.inputImageData!.length; i++) {
+            if ((i-3)%4 == 0) { // alpha
+                this.updates[this.updates.length -1].push(255);
+            } else {
+                // TODO do per pixel, not per colour component, i.e. get average brightness
+                const multiplier = this.updates[this.updates.length - 2][i] > 128 ? 1.2 : 0.8; 
+                this.updates[this.updates.length -1].push(this.updates[this.updates.length - 2][i]*multiplier);
             }
         }
     }

@@ -1,7 +1,37 @@
+var TWEEN = require('@tweenjs/tween.js');
+import * as THREE from 'three';
+
+
+export const animateImage = (source: any[], target: any[], options: any) => {
+    options = options || {};
+    // get targets from options or set to defaults
+    const to = target,
+        easing = options.easing || TWEEN.Easing.Quadratic.In,
+        duration = options.duration || 2000;
+    // create the tween
+    
+    const tween = new TWEEN.Tween(source)
+    tween.to(target, duration)
+        .easing(easing)
+        .onUpdate((d: any) => {
+            if(options.update){ 
+                options.update(d);
+            }
+         })
+        .onComplete(function(){
+          if(options.callback) options.callback();
+        });
+    // start the tween
+    tween.start();
+    // return the tween in case we want to manipulate it later on
+    return tween;
+}
+
+
 export const resizeImage = (image: HTMLImageElement) => {
 
     // TODO cross browser
-    const maxSize = 256;
+    const maxSize = 200;
     const maxWidth = (window.innerWidth * 0.3 <= maxSize) ? window.innerWidth * 0.3 : maxSize;
     const maxHeight = (window.innerHeight * 0.3 <= maxSize) ? window.innerHeight * 0.3 : maxSize;
 
@@ -26,6 +56,8 @@ export const resizeImage = (image: HTMLImageElement) => {
     if (ctx) {
         ctx.drawImage(image, 0, 0, newWidth, newHeight);
     }
+
+    // TODO delete this canvas
 
     // encode image to data-uri with base64 version of compressed image
     return canvas.toDataURL();
