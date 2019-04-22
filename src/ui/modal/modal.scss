@@ -1,0 +1,27 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    color: rgb(255, 255, 255);
+    background: rgba(255, 255, 255, 0.13);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 1rem;
+
+    .content {
+        width: 70%;
+        height: 70%;
+
+        background: rgba(0, 0, 0, 0.87);
+        border-radius: 1rem;
+        padding: 2rem;
+        max-width: 500px;
+        border: 3px solid rgb(82, 130, 173);
+    }
+}

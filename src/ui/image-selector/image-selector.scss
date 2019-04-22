@@ -1,0 +1,32 @@
+.image-selector {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    .upload {
+        border-radius: 1rem;
+        padding: 1rem;
+        border: 1px solid rgb(82, 130, 173);
+    }
+
+    #fileUploadId {
+        display: none;
+    }
+    
+    .sample-image-container {
+        display: flex;
+        flex-flow: wrap;
+        justify-content: center;
+        overflow: scroll;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        div {
+            width: 70%;
+            margin: 1rem;
+            img {
+                max-width: 100%;
+            }
+        }
+    }
+}

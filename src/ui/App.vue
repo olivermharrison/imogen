@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-    <div class="io" :style="{ filter: (showOperations) ? 'blur(5px)' : 'none' }">
+    <div class="io" :style="{ filter: (showOperations || showImageSelector) ? 'blur(5px)' : 'none' }">
         <div>
             <canvas id="inputCanvas" width="250" height="250  "></canvas>
         </div>
@@ -21,9 +21,16 @@
 
 
 
-    <div v-if="showOperations">
-        <operations v-on:close="closeModal" />
-    </div>
+    <transition name="fade">
+        <div v-if="showOperations">
+            <operations v-on:close="closeModal" />
+        </div>
+    </transition>
+    <transition name="fade">
+        <div v-if="showImageSelector">
+            <image-selector v-on:close="showImageSelector = false" v-on:selectedImage="setImage"/>
+        </div>
+    </transition>
 </div>
 </template>
 <script src="./app.ts" lang="ts"></script>

@@ -1,21 +1,45 @@
+$anim-duration: 300ms;
+
 #app {
     text-align: center;
     position: fixed;
     left: 0;
     top: 0;
     width: 100vw;
-    padding-top: 1rem;
-    color: rgb(251, 80, 80);
+    color: rgb(96, 245, 255);
+
     .io {
         width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         padding: 0.5rem;
+        transition: all $anim-duration;
         div {
-            border: 1px solid red;
+            //border: 1px solid red;
+        }
+
+        .io-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+            div {
+                border-radius: 1rem;
+                padding: 1rem;
+                border: 1px solid rgb(82, 130, 173);
+            }
         }
     }
+}
+
+* {
+    user-select: none;
+}
+
+html {
+    font-size: 14px;
 }
 
 * {
@@ -60,3 +84,11 @@ button {
     justify-content: space-between;
     
 }
+
+.fade-enter-active, .fade-leave-active {
+    transition: all $anim-duration;
+    transition-timing-function: ease-in-out;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
+  }

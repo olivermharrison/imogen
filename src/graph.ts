@@ -87,7 +87,7 @@ export default class Graph {
         }
     }
 
-    public setInputImage(file: string) {  
+    public setInputImage(file: any) {  
         this.resizedImage = false;
         this.updates = [];
 
@@ -103,6 +103,10 @@ export default class Graph {
             this.inputImageData = this.inputCanvas.drawImage(this.inputImage);
             this.outputImageData = this.outputCanvas.drawImage(this.inputImage);
             if (this.inputImageData) {
+                // TODO start all particles at black
+                if (this.particles) {
+                    this.particles.reset();
+                }
                 this.particles = new Particles(this.scene.scene, this.inputImageData);
                 this.updates.push(this.inputImageData.slice());
             }
