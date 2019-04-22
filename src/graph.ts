@@ -45,7 +45,7 @@ export default class Graph {
     }
 
     public update() {
-        
+
     }
 
     public setInputImage(file: any) {  
@@ -119,11 +119,15 @@ export default class Graph {
                         output.data[i] = d[i];  // cant assign whole array...
                         if (i%(4*Particles.divisor) === 0) {
                             const position = new THREE.Vector3(d[i] - 128, d[i+1] - 128, d[i+2] - 128);
+                            const colour = new THREE.Color(d[i]/255, d[i+1]/255, d[i+2]/255);;
+
                             (this.particles!.particles.geometry as any).vertices[i/(4*Particles.divisor)] = position;
+                            (this.particles!.particles.geometry as any).colors[i/(4*Particles.divisor)] = colour;
                         }
                     }
                     this.outputCanvas!.context!.putImageData(output , 0, 0 );
                     (this.particles!.particles!.geometry as any).verticesNeedUpdate = true;
+                    (this.particles!.particles.geometry as any).colorsNeedUpdate = true;
                 }
             });
         }
