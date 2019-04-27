@@ -23,7 +23,7 @@ export default class Scene {
     }
 
     update() {
-        this.theta += 0.2;
+        this.theta += 0.1;
         this.camera.position.x = this.radius * Math.sin( THREE.Math.degToRad( this.theta ) );
         this.camera.position.z = this.radius * Math.cos( THREE.Math.degToRad( this.theta ) );
         this.camera.lookAt( this.scene.position );
