@@ -193,7 +193,9 @@ export default class Graph {
             } else {
                 // TODO do per pixel, not per colour component, i.e. get average brightness
                 const multiplier = this.updates[this.updates.length - 2][i] > 128 ? 1.2 : 0.8; 
-                this.updates[this.updates.length -1].push(this.updates[this.updates.length - 2][i]*multiplier);
+                let newValue = this.updates[this.updates.length - 2][i]*multiplier;
+                newValue = newValue > 255 ? 255 : newValue;
+                this.updates[this.updates.length -1].push(newValue);
             }
         }
     }
