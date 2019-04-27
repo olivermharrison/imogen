@@ -61,6 +61,7 @@ export default class Operations extends Vue {
 
     constructor() {
         super();
+        this.selected = this.operations[0];
     }
 
     public close(applied: boolean) {
