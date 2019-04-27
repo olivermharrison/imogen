@@ -1,6 +1,15 @@
 import { Component, Vue } from 'vue-property-decorator';
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/antd.css'
 
-@Component
+import Modal from '../modal/modal.vue';
+
+@Component({
+    components: {
+        Modal,
+        VueSlider,
+    }
+})
 export default class Operations extends Vue {
 
     public operations = [

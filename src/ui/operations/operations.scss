@@ -1,67 +1,58 @@
-.operation-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+@import '../variables';
 
-    color: rgb(255, 255, 255);
-    background: rgba(255, 255, 255, 0.13);
+.operations-container {
 
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    max-height: 100%;
 
-    .content {
-        width: 80%;
-        height: 80%;
+    .operations {
+        overflow-y: scroll;
+        flex-grow: 1;
 
-       
+        &::-webkit-scrollbar {
+            display: none;
+        }
 
-        background: rgba(0, 0, 0, 0.87);
-        border-radius: 1rem;
-        padding: 2rem;
-        max-width: 500px;
-        border: 3px solid rgb(82, 130, 173);
-
-        display: flex;
-        flex-direction: column;
-
-
-        .operations {
-            overflow-y: scroll;
-            flex-grow: 1;
-
-            &::-webkit-scrollbar {
-                display: none;
+        .operation {
+            text-align: left;
+            &.selected {
+                color: $color-primary;
             }
 
-            .operation {
-                margin: 1rem;
-                padding: 0.5rem;
-                border-radius: 1rem;
+            p {
+                margin: 0.4rem;
+            }
 
-                background: rgba(255, 255, 255, 0.13);
-    
-                &.selected {
-                    background: rgba(0, 167, 255, 0.38);
-                }
-    
-                p {
-                    margin: 0.4rem;
-                }
+            h3 {
+                font-size: 1.2rem;
+            }
 
-                .io-range {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    span {
-                        margin: 1rem;
-                    }    
+            .io-range {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                span {
+                    margin: 1rem;
+                }    
+                .vue-slider {
+                    flex: 1 0 auto;
+                    
                 }
             }
         }
-
-        
     }
+
+    .options {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        button {
+            margin: 1rem 1rem 0rem 1rem;
+        }
+    }
+}
+
+.vue-slider-dot-tooltip {
+    display: none !important;
 }
