@@ -22,12 +22,12 @@
 
 
     <transition name="fade">
-        <div v-if="showOperations">
+        <div v-show="showOperations">
             <operations v-on:close="closeModal" />
         </div>
     </transition>
     <transition name="fade">
-        <div v-if="showImageSelector">
+        <div v-show="showImageSelector">
             <image-selector v-on:close="showImageSelector = false" v-on:selectedImage="setImage"/>
         </div>
     </transition>
