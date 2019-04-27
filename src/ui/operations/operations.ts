@@ -15,15 +15,15 @@ export default class Operations extends Vue {
     public operations = [
         {
             title: 'invert',
-            description: 'find the inverse of the colour for each pixel by subtracting each RGB from 255',
+            description: 'find the inverse of the colour for each pixel by subtracting each RGB value from 255',
         },
         {
             title: 'greyscale',
             description: 'convert each pixel to a greyscale colour by finding the average of the RGB values',
         },
         {
-            title: 'brighten',
-            description: 'multiply the RGB values of each pixel by <strong><x></strong>',
+            title: 'brighteness',
+            description: 'multiply the RGB values of pixels by <strong><x></strong>',
             control: 'range',
             min: -100,
             max: 100,
@@ -32,7 +32,7 @@ export default class Operations extends Vue {
         },
         {
             title: "contrast",
-            description: "brighten bright pixel & darken dark pixels by <strong><x></strong>",
+            description: "multiply pixel brightness by <strong><x></strong>",
             control: 'range',
             value: 0,
             min: -100,

@@ -93,7 +93,7 @@ export default class Graph {
                 isReverseOperation = true;
                 this.resetImage();
                 break;
-            case "brighten":
+            case "brighteness":
                 this.brighten(parseInt(operation.value));
                 break;
             case "contrast":
