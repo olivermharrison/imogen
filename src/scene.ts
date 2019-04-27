@@ -19,10 +19,6 @@ export default class Scene {
         this.renderer.setSize( window.innerWidth, window.innerHeight );
         document.body.appendChild( this.renderer.domElement );
 
-        // lights
-        const ambientLight = new THREE.AmbientLight( 0xffffff );
-        this.scene.add( ambientLight );
-
         this.controls = new OrbitControls(this.camera, this.renderer.domElement) as any;
     }
 
