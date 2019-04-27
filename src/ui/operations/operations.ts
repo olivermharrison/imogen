@@ -74,7 +74,9 @@ export default class Operations extends Vue {
     public getDescription(operation: any) {
         switch (operation.control) {
             case "range":
-                return (operation.description as string).replace('<x>', `${operation.value}${operation.units}`)
+                let value = (operation.value.toString() as string).padStart(3, "_");
+                value = value.replace(/_/g, "&nbsp;");
+                return (operation.description as string).replace('<x>', `${value}${operation.units}`)
                 break;
             default:
                 return operation.description;
