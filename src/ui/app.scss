@@ -1,4 +1,53 @@
-$anim-duration: 300ms;
+@import './variables';
+
+* {
+    user-select: none;
+    text-transform: uppercase;
+}
+html {
+    font-size: 13px;
+}
+body {
+    position: fixed;
+    top: 0;
+    left: 0;;
+}
+p {
+    text-transform: initial;
+}
+
+.btn-select-desktop, .btn-select-mobile {
+    flex: none; 
+    margin: 0px;
+}
+.btn-select-desktop {
+    display: none;
+}
+.btn-select-mobile {
+    display: inline;
+}
+@media only screen and (min-width: 800px) {
+    html {
+        font-size: 14px;
+    }
+    .btn-select-desktop {
+        display: inline;
+    }
+    .btn-select-mobile {
+        display: none;
+    }
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Gotham', 'Montserrat', 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
 #app {
     text-align: center;
@@ -6,48 +55,48 @@ $anim-duration: 300ms;
     left: 0;
     top: 0;
     width: 100vw;
-    color: rgb(96, 245, 255);
+    color: $color-primary;
 
     .io {
         width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        padding: 0.5rem;
+        padding: 0rem 2rem;
         transition: all $anim-duration;
-        div {
-            //border: 1px solid red;
+
+        span {
+            font-size: 1rem;
+            padding-bottom: 0.2rem;
+            margin-top: -1.6rem;
+            display: block;
         }
 
         .io-center {
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             flex-direction: column;
 
             div {
+                
                 border-radius: 1rem;
                 padding: 1rem;
-                border: 1px solid rgb(82, 130, 173);
+                border: 1px solid $color-primary;
             }
         }
     }
 }
 
-* {
-    user-select: none;
-}
-
-html {
-    font-size: 14px;
-}
-
-* {
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+h1 {
+    text-shadow: 1px 2px $color-primary;;
+    font-weight: initial;
+    font-size: 2.5rem;
+    color: black;
+    padding: 1rem;
+    @media only screen and (min-width: 800px) {
+        font-size: 4.2rem;
+      }
 }
 
 body {
@@ -56,20 +105,33 @@ body {
     overflow: hidden;
     margin: 0;
 }
-button {
-    padding: 1rem 2rem;
+button, label {
+    padding: 0.7rem 1.2rem;
     margin: 1rem;
-    border-radius: 0.4rem;
-    border: 1px solid rgb(67, 181, 226);
-    background: none;
+    border-radius: 0.6rem;
+    
     color: rgb(255, 255, 255);
-    font-size: 1rem;
     outline: none;
     cursor: pointer;
     font-weight: bold;
+    
+    flex: 1 0 auto;
+    transition: all 100ms;
+    outline: none;
+
+    background: rgba(11, 17, 31, 0.8);
+    border: 0px;
 
     &.accent {
-        background: rgb(95, 167, 245);
+        background: rgba(23, 36, 66, 0.9);
+    }
+
+    &.big {
+        font-size: 1.3rem;
+    }
+
+    &:active {
+        transform: translateY(2px);
     }
 }
 
@@ -77,18 +139,21 @@ button {
     position: fixed;
     bottom: 0;
     left: 0;
+    right: 0;
+    max-width: 500px;
+    margin: auto;
     width: 100vw;
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    
+    align-items: center;
 }
 
 .fade-enter-active, .fade-leave-active {
     transition: all $anim-duration;
     transition-timing-function: ease-in-out;
-  }
-  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
-  }
+}
