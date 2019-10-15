@@ -2,7 +2,7 @@ import * as THREE from 'three';
 var TWEEN = require('@tweenjs/tween.js');
 
 import Scene from './scene';
-import Particles from './particles';
+import Particles, { PARTICLE_Y_OFFSET, PARTICLE_COLOUR_OFFSET } from './particles';
 import CanvasImage from './CanvasImage';
 import * as util from './util';
 
@@ -112,14 +112,13 @@ export default class Graph {
             const source = isReverseOperation ? this.updates[this.updates.length-1] : this.updates[this.updates.length-2];
             const target = isReverseOperation ? this.updates[this.updates.length-2] : this.updates[this.updates.length-1];
 
-            util.animateImage(source, target, {
-                duration: 1500, 
+            util.animateImage(JSON.parse(JSON.stringify(source)), JSON.parse(JSON.stringify(target)), {
                 update: (d: any[]) => {
                     for (let i=0; i<d.length; ++i) {
                         output.data[i] = d[i];  // cant assign whole array...
                         if (i%(4*Particles.divisor) === 0) {
-                            const position = new THREE.Vector3(d[i] - 128, d[i+1] - 128, d[i+2] - 128);
-                            const colour = new THREE.Color(d[i]/255, d[i+1]/255, d[i+2]/255);;
+                            const position = new THREE.Vector3(d[i] - 128, d[i+1] - 128 - PARTICLE_Y_OFFSET, d[i+2] - 128);
+                            const colour = new THREE.Color(d[i]/255+0.1, d[i+1]/255+0.1, d[i+2]/255+PARTICLE_COLOUR_OFFSET);;
 
                             (this.particles!.particles.geometry as any).vertices[i/(4*Particles.divisor)] = position;
                             (this.particles!.particles.geometry as any).colors[i/(4*Particles.divisor)] = colour;
@@ -130,6 +129,12 @@ export default class Graph {
                     (this.particles!.particles.geometry as any).colorsNeedUpdate = true;
                 }
             });
+
+            if (isReverseOperation) {
+                this.updates.pop();
+            }
+        } else {
+            console.error('no updates to be applied');
         }
     }
 
@@ -173,16 +178,16 @@ export default class Graph {
 
     public brighten(percentage: number = 0) {   // -100 to 100
         this.updates.push([]);
-            const multiplier = ((percentage + 100) / 100);
-            for (var i=0; i<this.inputImageData!.length; i++) {
-                if ((i-3)%4 == 0) { // alpha
-                  this.updates[this.updates.length -1].push(255);
-                } else {
-                    let newValue = this.updates[this.updates.length - 2][i]*multiplier;
-                    newValue = newValue > 255 ? 255 : newValue;
-                    this.updates[this.updates.length -1].push(newValue);
-                }
+        const multiplier = ((percentage + 100) / 100);
+        for (var i=0; i<this.inputImageData!.length; i++) {
+            if ((i-3)%4 == 0) { // alpha
+                this.updates[this.updates.length -1].push(255);
+            } else {
+                let newValue = this.updates[this.updates.length - 2][i]*multiplier;
+                newValue = newValue > 255 ? 255 : newValue;
+                this.updates[this.updates.length -1].push(newValue);
             }
+        }
     }
 
     public contrast() {
