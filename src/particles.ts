@@ -6,7 +6,7 @@ export default class Particles {
     scene: THREE.Scene;
     data: Uint8ClampedArray;
 
-    static divisor: number = 10;
+    static divisor: number = 15;
 
     particles: THREE.Points;
 
@@ -21,7 +21,7 @@ export default class Particles {
         sprite.minFilter = THREE.NearestFilter;
 
         let material = new THREE.PointsMaterial({ 
-            size: 5,
+            size: 6,
             vertexColors: THREE.VertexColors, 
             sizeAttenuation: true, 
             map: sprite, 
