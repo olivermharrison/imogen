@@ -1,13 +1,11 @@
+import { MAX_WIDTH, MAX_HEIGHT } from './CanvasImage';
 var TWEEN = require('@tweenjs/tween.js');
-import * as THREE from 'three';
-
 
 export const animateImage = (source: any[], target: any[], options: any) => {
     options = options || {};
     // get targets from options or set to defaults
-    const to = target,
-        easing = options.easing || TWEEN.Easing.Quadratic.In,
-        duration = options.duration || 2000;
+    const easing = options.easing || TWEEN.Easing.Exponential.InOut;
+    const duration = options.duration || 2500;
     // create the tween
     
     const tween = new TWEEN.Tween(source)
@@ -31,9 +29,10 @@ export const animateImage = (source: any[], target: any[], options: any) => {
 export const resizeImage = (image: HTMLImageElement) => {
 
     // TODO cross browser
-    const maxSize = 200;
-    const maxWidth = (window.innerWidth * 0.3 <= maxSize) ? window.innerWidth * 0.3 : maxSize;
-    const maxHeight = (window.innerHeight * 0.3 <= maxSize) ? window.innerHeight * 0.3 : maxSize;
+    const maxWidthPercentage = 0.4;
+    const maxHeightPercentage = 0.25;
+    const maxWidth = (window.innerWidth * maxWidthPercentage <= MAX_WIDTH) ? window.innerWidth * maxWidthPercentage : MAX_WIDTH;
+    const maxHeight = (window.innerHeight * maxHeightPercentage <= MAX_HEIGHT) ? window.innerHeight * maxHeightPercentage : MAX_HEIGHT;
 
     const originalWidth = image.width;
     const originalHeight = image.height;
