@@ -7,12 +7,12 @@ export default class Scene {
     public renderer: THREE.WebGLRenderer;
     public controls: THREE.OrbitControls;
 
-    public radius: number = 200;
+    public radius: number = 250;
     private theta: number = 0;
 
     constructor() {
         this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+        this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 2000 );
         this.camera.position.y = this.radius;
 
         this.renderer = new THREE.WebGLRenderer({
